@@ -1,0 +1,9 @@
+.spinner-container {
+  top: 50%;
+  left: 45%;
+  position: absolute;
+}
+.container {
+  margin: 25px;
+  position: relative;
+}
