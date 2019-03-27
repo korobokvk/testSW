@@ -26,7 +26,7 @@ export class TableComponent implements OnInit, OnDestroy {
   public films: any[];
   public residents: any[];
   private onDestroy: Subject<any> = new Subject<any>();
-  public spinnerState: boolean;
+  public spinnerState = true;
   public dataSource: any[];
   public displayedColumns: string[] = [];
   public columns: Config[] = [
@@ -74,7 +74,6 @@ export class TableComponent implements OnInit, OnDestroy {
     return row[column.columnDef];
   }
   private getData() {
-    this.spinnerState = true;
     this.tableService.getPlenets().pipe(
     takeUntil(this.onDestroy))
     .subscribe((data: any[]) => {
