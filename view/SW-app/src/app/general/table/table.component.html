@@ -32,13 +32,13 @@
           fxLayoutAlign="space-between stretch"
                 [@detailExpand]="row === expandedElement ? 'expanded' : 'collapsed'">
           <span *ngIf="spinnerState">Loading ...</span>
-          <div *ngIf="!spinnerState">
+          <div *ngIf="!spinnerState && films">
             <h3>Films</h3>
             <ul>
               <li *ngFor="let film of films">{{film.title}}</li>
             </ul>
           </div>
-          <div *ngIf="!spinnerState">
+          <div *ngIf="!spinnerState && residents">
               <h3>Residents</h3>
               <ul>
                 <li *ngFor="let resident of residents"  >{{resident.name}}</li>
