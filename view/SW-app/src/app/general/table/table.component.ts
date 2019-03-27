@@ -1,12 +1,12 @@
+
+import {takeUntil} from 'rxjs/operators';
 import { Component, OnInit, OnDestroy } from '@angular/core';
 import {animate, state, style, transition, trigger} from '@angular/animations';
-import 'rxjs/add/operator/takeUntil';
 
 
 import { TableService } from '../table.service';
 import { Config } from './config.model';
-import { format } from 'url';
-import { Subject } from 'rxjs/Subject';
+import { Subject } from 'rxjs';
 
 @Component({
   selector: 'app-table',
@@ -22,6 +22,9 @@ import { Subject } from 'rxjs/Subject';
 })
 
 export class TableComponent implements OnInit, OnDestroy {
+  public expandedElement = null;
+  public films: any[];
+  public residents: any[];
   private onDestroy: Subject<any> = new Subject<any>();
   public spinnerState: boolean;
   public dataSource: any[];
@@ -59,6 +62,11 @@ export class TableComponent implements OnInit, OnDestroy {
   ];
   constructor(private tableService: TableService) { }
 
+  ngOnInit() {
+    this.displayedColumns = this.columns.map(c => c.columnDef);
+    this.getData();
+  }
+
   public getValue(column, row) {
     if (column.format) {
       return column.format(row);
@@ -67,16 +75,31 @@ export class TableComponent implements OnInit, OnDestroy {
   }
   private getData() {
     this.spinnerState = true;
-    this.tableService.getPlenets()
-    .takeUntil(this.onDestroy)
+    this.tableService.getPlenets().pipe(
+    takeUntil(this.onDestroy))
     .subscribe((data: any[]) => {
       this.spinnerState = false;
       this.dataSource = data;
     });
   }
-  ngOnInit() {
-    this.displayedColumns = this.columns.map(c => c.columnDef);
-    this.getData();
+  onRowClick(row, rowState) {
+    const params = [
+      {key: 'residents', value: row.residents},
+      {key: 'films', value: row.films}
+    ];
+    const someParam = params.filter(item => item.value !== null && item.value.toString().length)
+      .map(item => `${item.key}=${item.value}`)
+      .join('&');
+    if (rowState) {
+      this.spinnerState = true;
+      this.tableService.getDetails(someParam).pipe(
+      takeUntil(this.onDestroy))
+      .subscribe(data => {
+        this.films = data.filter(film => film.title);
+        this.residents = data.filter(resident => resident.name);
+        this.spinnerState = false;
+      });
+    }
   }
 
   ngOnDestroy() {

@@ -5,6 +5,7 @@ var cookieParser = require('cookie-parser');
 var logger = require('morgan');
 
 var indexRouter = require('./routes/index');
+var detailsRouter = require('./routes/details');
 
 var app = express();
 
@@ -15,5 +16,6 @@ app.use(express.urlencoded({ extended: false }));
 app.use(cookieParser());
 
 app.use('/planets', indexRouter);
+app.use('/details', detailsRouter)
 
 module.exports = app;

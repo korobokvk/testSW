@@ -1,6 +1,7 @@
 import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import { MatTableModule, MatProgressSpinnerModule } from '@angular/material';
+import { MatTableModule, MatProgressSpinnerModule, MatListModule } from '@angular/material';
+import { NoopAnimationsModule } from '@angular/platform-browser/animations';
 import { CdkTableModule } from '@angular/cdk/table';
 import { RouterModule, Routes } from '@angular/router';
 import { HttpModule } from '@angular/http';
@@ -21,6 +22,7 @@ const routes: Routes = [{
     CommonModule,
     MatTableModule,
     MatProgressSpinnerModule,
+    MatListModule,
     CdkTableModule,
     HttpModule,
     HttpClientModule
