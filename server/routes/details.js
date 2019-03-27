@@ -3,14 +3,13 @@ var router = express.Router();
 var request = require('request');
 var rp = require('request-promise')
 var url = 'https://swapi.co/api/planets/';
-var planetStorage = [];
+//var planetStorage = [];
 
-const getDatails = (urls) => {
-  console.log(urls)
+const getDatails = (urls, planetStorage = []) => {
   return rp(urls.pop()).then(data => {
     var details = JSON.parse(data);
-    planetStorage = planetStorage.concat(details)
-    return urls.length ? getDatails(urls) : Promise.resolve(planetStorage)
+    planetStorage.push(details)
+    return urls.length ? getDatails(urls, planetStorage) : Promise.resolve(planetStorage)
   })
 }
 
